@@ -51,12 +51,9 @@ class Scanner:
                     if(match.lastgroup == name):
                         token_type = name
                         lexeme = match.group(name)
-                        print(token_type)
-                        print(lexeme)
                         ###############################
                         try:
                             if token_type == 'keyword':
-                                print(token_type)
                                 if lexeme in self.types and last_lexeme in self.types:
                                     print(
                                         "Identificador Inválido pois não pode ser uma palavra reservada")
@@ -70,7 +67,6 @@ class Scanner:
                                             'O lexeme {} não é válido'.format(lexeme))
 
                             elif token_type == 'identifier':
-                                print(token_type)
                                 if Identifier(lexeme).validate():
                                     tokens_list.append((token_type, lexeme))
                                 else:
@@ -121,7 +117,7 @@ class Scanner:
                                     errors.append(
                                         'O lexeme {} não é válido'.format(lexeme))
                             elif token_type == 'string':
-                                print(token_type)
+                                
                                 if StringValidation(lexeme).validate():
                                     tokens_list.append((token_type, lexeme))
                                 else:
