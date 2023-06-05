@@ -3,7 +3,7 @@ class Parser:
         self.tokens = tokens
         self.token_index = 0
         self.current_token = None
-        
+
     def parse(self):
         self.current_token = self.get_next_token()
         self.program()
@@ -188,17 +188,15 @@ class Parser:
         self.expression()
         while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
             self.consume('delimiter', ',')
-            self.expression()
-
     def consume(self, token_type, expected_value=None):
         if self.current_token is None:
             raise SyntaxError("Unexpected end of input")
 
         if self.current_token[0] != token_type:
-            raise SyntaxError(f"Expected {token_type}, got {self.current_token[0]}")
+            raise SyntaxError(f"Expected {token_type}, got {self.current_token[0]}  at {self.current_token[1]}")
 
         if expected_value is not None and self.current_token[1] != expected_value:
-            raise SyntaxError(f"Expected {expected_value}, got {self.current_token[1]}")
+            raise SyntaxError(f"Expected {expected_value},  got {self.current_token[0]}  at{self.current_token[1]}")
 
         self.current_token = self.get_next_token()
 
