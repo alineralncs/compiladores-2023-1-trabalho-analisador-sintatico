@@ -1,9 +1,5 @@
 from lexico.scanner import Scanner
 from lexico.scanner import *
-<<<<<<< HEAD
-
-
-=======
 from sintatico.parser import Parser
 
 # if __name__ == '__main__':
@@ -18,32 +14,27 @@ from sintatico.parser import Parser
 
 #     # print("\nTokens Inválidos: \n")
 #     # for error in errors:
-#     #     print(errors[error])
->>>>>>> 3687ac3b2d524014a2681fa323d2c75d5ba5adaa
+#     #     print(errors[error]
 if __name__ == '__main__':
     file_code_font = 'exemplos.md'
 
+    # Lexical analysis
     scanner = Scanner(file_code_font)
     tokens, errors = scanner.analyse()
 
-<<<<<<< HEAD
-    print("\nTokens Válidos \n")
-    for token in tokens:
-        print('<{}, {}>'.format(token[0], token[1]))
-
-    # print("\nTokens Inválidos: \n")
-    # for error in errors:
-    #     print(errors[error])
-=======
     if errors:
+        print("Lexical errors:")
         for error in errors:
-            print(f"Erro léxico na linha {error[0]}: {error[1]}")
-        exit(1)
+            print(error)
+    else:
+        print("Tokens:")
+        for token in tokens:
+            print(token)
 
+    # Syntactic analysis
     parser = Parser(tokens)
     try:
-        parse_tree = parser.parse()
-        print("Análise sintática concluída com sucesso!")
+        parser.parseToken()
+        parser.logicAnd()
     except SyntaxError as e:
-        print(f"Erro sintático: {str(e)}")
->>>>>>> 3687ac3b2d524014a2681fa323d2c75d5ba5adaa
+        print("Syntax error:", str(e))

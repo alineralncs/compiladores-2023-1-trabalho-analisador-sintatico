@@ -26,7 +26,6 @@ class Identifier:
         reserved_words = ['int', 'char', 'long', 'short', 'float', 'double', 'void', 'if', 'else', 'for', 'while',
                           'do', 'break', 'continue', 'struct', 'switch', 'case', 'default', 'return', 'main',
                           'printf', 'scanf']
-        print('self', self.value)
         if self.value in reserved_words:
             raise IdentifierException(
                 f"Identificador Inválido: {self.value}")
