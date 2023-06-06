@@ -52,7 +52,7 @@ class Parser:
       self.consume('identifier')
     while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
       self.consume('delimiter', ',')
-      self.parameters()
+      self.consume('identifier')
       
   def varDecl(self): 
     self.consume('keyword', 'var')
@@ -62,7 +62,7 @@ class Parser:
       self.consume('operator', '=')
       self.expression() #depois do sinal = podem vir expressões
     self.consume('delimiter', ';')
-  #TODO: corrigir erro aqui
+  
   def statement(self): 
     # if self.current_token[0] == 'identifier':
     #   self.consume('identifier')
@@ -143,7 +143,6 @@ class Parser:
     while self.current_token[0] != 'delimiter' and self.current_token[1] != '}':
       self.declaration() #pode ser várias coisas dentro de {}
     self.consume('delimiter', '}')
-      #TODO: o erro está aqui: corrigir!!
 
   def exprStmt(self): 
     self.expression() #depois precisa do ;
@@ -153,19 +152,23 @@ class Parser:
   def expression(self): 
     self.assignment()
     
-  #TODO: Verificar se a função assignment ta realmente batendo com a gramática
   def assignment(self): #var a  = 1;
-    self.call()
-    if self.current_token[0] == 'delimiter' and self.current_token[1] == '.':
-       self.consume('delimiter', '.')
-    elif self.current_token[0] == 'identifier':
+    #TODO
+    # i = 0
+    # aux_list = ["true", "false", "nil", "this", "integer", "string", "identifier", "delimiter", "keyword"]
+    # while i < len(aux_list)                   : 
+    #   if self.current_token[0] == aux_list[i]: 
+    #     self.call()
+    #    i                     += 1
+    if self.current_token[0] == 'identifier':
       self.consume('identifier')
       if self.current_token[0] == 'operator' and self.current_token[1] == '=':
         self.consume('operator', '=')
         self.assignment()
+      else: 
+        self.logic_or()
     else: 
       self.logic_or()
-    
   def logic_or(self): 
     self.logic_and()
     while self.current_token[0] == 'keyword' and self.current_token[1] == 'or':
@@ -225,8 +228,8 @@ class Parser:
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
                                                    self.current_token[1] == 'nil' or self.current_token[1] == 'this'):
             self.consume('keyword')
-        #não é number
-        elif self.current_token[0] == 'number' or self.current_token[0] == 'string':
+        #não é number, é integer
+        elif self.current_token[0] == 'integer' or self.current_token[0] == 'string':
             self.consume(self.current_token[0])
         elif self.current_token[0] == 'identifier':
             self.consume('identifier')

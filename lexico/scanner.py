@@ -22,7 +22,7 @@ class Scanner:
             ]
     regex = {
         # Expressões regulares para palavras-chaves, identificadores, operadores, delimitadores, inteiros, floats e strings
-        'keyword': r'(?<!\w)(int|char|long|short|float|double|void|if|else|for|while|do|break|continue|struct|switch|case|default|return|main|printf|scanf|elif|auto|enum|extern|goto|register|signed|sizeof|static|typedef|union|unsigned|volatile|while)(?!\w)',
+        'keyword': r'(?<!\w)(int|fun|char|long|short|float|double|void|if|else|for|while|do|break|continue|struct|switch|case|default|return|main|printf|scanf|elif|auto|enum|extern|goto|register|signed|sizeof|static|typedef|union|unsigned|volatile|while)(?!\w)',
         'identifier': r'\b[a-zA-Z_][a-zA-Z0-9_]*\b',
         'operator': r'(\+\+|--|->|&&|\|\||<<|>>|<=|>=|==|!=|[!%^&*+=\-\|/~<>\?])',
         'delimiter': r'(\(|\)|\[|\]|\{|\}|;|,|:)',
