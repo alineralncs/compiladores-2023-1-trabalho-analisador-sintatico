@@ -1,4 +1,4 @@
-#from lexico.scanner import *
+from lexico.scanner import *
 
 class Parser: 
   def  __init__(self, list_tokens): 
@@ -259,8 +259,18 @@ class Parser:
             self.expression()
       #consume                                      
 
-
   def consume(self, token_type, expected_value=None):
+        if self.current_token is None:
+            raise SyntaxError("Unexpected end of input")
+
+        if self.current_token[0] != token_type:
+            raise SyntaxError(f"Expected |{token_type}|  got |{self.current_token[0]}| ")
+
+        if expected_value is not None and self.current_token[1] != expected_value:
+            raise SyntaxError(f"Expected |{expected_value}|  got |{self.current_token[1]}| ")
+
+        self.current_token = self.get_next_token()
+  def conssusme(self, token_type, expected_value=None):
         if self.current_token is None:
             error = "Unexpected end of input"
             self.error_list.append(error)
