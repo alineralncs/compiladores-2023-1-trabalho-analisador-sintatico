@@ -228,7 +228,7 @@ class Parser:
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
                                                    self.current_token[1] == 'nil' or self.current_token[1] == 'this'):
             self.consume('keyword')
-        #não é number, é integer
+        #não é number
         elif self.current_token[0] == 'integer' or self.current_token[0] == 'string':
             self.consume(self.current_token[0])
         elif self.current_token[0] == 'identifier':
@@ -247,16 +247,20 @@ class Parser:
         while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
             self.consume('delimiter', ',')
             self.expression()
-      #consume                                      : 
-  def consume(self, token_type, expected_value=None): 
-    if  self.current_token is None                    : 
-      raise SyntaxError("Unexpected end of input")
-    if self.current_token[0] != token_type:
-      raise SyntaxError(f"Expected {token_type}, got {self.current_token[0]} at {self.current_token[1]}")
-    if expected_value is not None and self.current_token[1] != expected_value:
-      raise SyntaxError(f"Expected {expected_value}, got {self.current_token[0]} at {self.current_token[1]}")
-    self.current_token = self.get_next_token()
+      #consume                                      
+  def consume(self, token_type, expected_value=None):
+      if self.current_token is None:
+          raise SyntaxError("Unexpected end of input")
+      print(f"Token Type: {self.current_token[0]}")
+      print(f"Token Value: {self.current_token[1]}")
+
+      if self.current_token[0] != token_type:
+          raise SyntaxError(f"Expected {token_type}, got {self.current_token[0]} at {self.current_token[1]}")
+
+      if expected_value is not None and self.current_token[1] != expected_value:
+          raise SyntaxError(f"Expected {expected_value}, got {self.current_token[0]} at {self.current_token[1]}")
+
+      self.current_token = self.get_next_token()
   
 
-  
   

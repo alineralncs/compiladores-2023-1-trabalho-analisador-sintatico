@@ -15,12 +15,12 @@ if __name__ == '__main__':
 
     # Syntactic analysis
     parser = Parser(tokens)
-    print("oi")
-    #parser.parseTokens()
-    parser.program()
+    # parser.program()
+    # print("oi")
+    # #parser.parseTokens()
+    
     print("deu certo")
-    # try:
-    #     parser.parseTokens()
-    #     print("Análise sintática concluída sem erros.")
-    # except SyntaxError as e:
-    #     print("Syntax error:", str(e))
+    try:
+        parser.program()
+    except SyntaxError as e:
+        print("Syntax error:", str(e))
