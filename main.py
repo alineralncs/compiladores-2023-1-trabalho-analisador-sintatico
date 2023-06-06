@@ -24,3 +24,4 @@ if __name__ == '__main__':
         parser.program()
     except SyntaxError as e:
         print("Syntax error:", str(e))
+

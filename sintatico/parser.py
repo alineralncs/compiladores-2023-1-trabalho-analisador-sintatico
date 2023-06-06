@@ -5,29 +5,28 @@ class Parser:
     self.list_tokens = list_tokens #lista de tokens validados pelo analisador léxico
     self.token_index = 0 #primeiro índice da pilha
     self.current_token = None #token atual
+    self.error_list = []
+    self.error_occurred = False
   #ler token por token: 
   def  get_next_token(self): 
+    #print('\n get next token \n ')
     if self.token_index < len(self.list_tokens): 
+     # print('\n get next token 2 \n ')
       self.current_token = self.list_tokens[self.token_index]
       self.token_index += 1
+      print(f'\n current token {self.current_token} \n ')
       return self.current_token
     else:
+      #print('\n get next token 3 \n ')
       return None
-      #self.current_token = None  
     
-  # def parseTokens(self): 
-  #   self.current_token = self.get_next_token()
-  #   self.program()
-  
-  #raiz da árvore derivadora
   def program(self): 
-    self.current_token = self.get_next_token()
-    #try: 
-    while self.current_token is not None: 
-      self.declaration()
-    #except SyntaxError as e: 
-      #print("Erro de sintaxe")
-      #return
+     # print('\n ======= program ======= \n')
+      self.current_token = self.get_next_token()
+      while self.current_token is not None: 
+            self.declaration()
+
+
   def declaration(self):                                                  
     if  self.current_token[0] == 'keyword' and self.current_token[1] == 'fun': #ok
       self.funDecl()
@@ -48,16 +47,19 @@ class Parser:
     self.block()
     
   def parameters(self): 
+   # print('\n ====== parametrers ======= \n')
     if self.current_token[0] == 'identifier':
+
       self.consume('identifier')
     while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
       self.consume('delimiter', ',')
       self.consume('identifier')
       
   def varDecl(self): 
+    print('======= var decla ======= \n')
     self.consume('keyword', 'var')
     self.consume('identifier')
-    #opcional: = expressão
+   
     if self.current_token[0] == 'operator' and self.current_token[1] == '=':
       self.consume('operator', '=')
       self.expression() #depois do sinal = podem vir expressões
@@ -74,6 +76,7 @@ class Parser:
     #   self.consume('identifier')
     #   self.exprStmt() #erro ta aqui
     if self.current_token[0] == 'identifier':
+       print(f'ta passando como identifier?')
        self.exprStmt()
     elif self.current_token[0] == 'keyword' and self.current_token[1] == 'for':
       self.forStmt()
@@ -150,16 +153,12 @@ class Parser:
     self.consume('delimiter', ';')
 
   def expression(self): 
+    # print('\n ====== expression =======')
     self.assignment()
     
   def assignment(self): #var a  = 1;
-    #TODO
-    # i = 0
-    # aux_list = ["true", "false", "nil", "this", "integer", "string", "identifier", "delimiter", "keyword"]
-    # while i < len(aux_list)                   : 
-    #   if self.current_token[0] == aux_list[i]: 
-    #     self.call()
-    #    i                     += 1
+    #print('\n ======= assignment ======= \n')
+    
     if self.current_token[0] == 'identifier':
       self.consume('identifier')
       if self.current_token[0] == 'operator' and self.current_token[1] == '=':
@@ -169,6 +168,7 @@ class Parser:
         self.logic_or()
     else: 
       self.logic_or()
+    
   def logic_or(self): 
     self.logic_and()
     while self.current_token[0] == 'keyword' and self.current_token[1] == 'or':
@@ -214,53 +214,71 @@ class Parser:
             self.call()
 
   def call(self):
+        #print('\n ====== call ======= \n')
         self.primary()
+
         if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
           self.consume('delimiter', '(')
+          self.arguments()
           if self.current_token[0] != 'delimiter' or self.current_token[1] != ')':
-            self.arguments()
-          self.consume('delimiter', ')')
-        elif self.current_token[0] == 'operator' and self.current_token[1] == '.':
-          self.consume('operator', '.')
-          self.consume('identifier')
+              print('faaaa')
+              self.consume('delimiter', ')')
+          elif self.current_token[0] == 'operator' and self.current_token[1] == '.':
+            self.consume('operator', '.')
+            self.consume('identifier')
 
   def primary(self): 
+       # print('\n ====== primary ====== \n')
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
                                                    self.current_token[1] == 'nil' or self.current_token[1] == 'this'):
             self.consume('keyword')
         #não é number
-        elif self.current_token[0] == 'integer' or self.current_token[0] == 'string':
-            self.consume(self.current_token[0])
-        elif self.current_token[0] == 'identifier':
+        if self.current_token[0] == 'integer':
+            self.consume('integer')
+        if  self.current_token[0] == 'string':
+            self.consume('string')
+        if self.current_token[0] == 'identifier':
             self.consume('identifier')
-        elif self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
+            print(f'tokentype {self.current_token[0]}')
+        if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
+            print('here')
             self.consume('delimiter', '(')
             self.expression()
             self.consume('delimiter', ')')
-        elif self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
+        if self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
             self.consume('keyword', 'super')
             self.consume('operator', '.')
             self.consume('identifier')
 
   def arguments(self):
         self.expression()
+        print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
         while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
+            print('nao entra')
             self.consume('delimiter', ',')
             self.expression()
       #consume                                      
+
+
   def consume(self, token_type, expected_value=None):
-      if self.current_token is None:
-          raise SyntaxError("Unexpected end of input")
-      print(f"Token Type: {self.current_token[0]}")
-      print(f"Token Value: {self.current_token[1]}")
+        if self.current_token is None:
+            error = "Unexpected end of input"
+            self.error_list.append(error)
 
-      if self.current_token[0] != token_type:
-          raise SyntaxError(f"Expected {token_type}, got {self.current_token[0]} at {self.current_token[1]}")
+        if self.current_token[0] != token_type:
+            error = f"Expected |{expected_value}| got |{self.current_token[1]}|"
+            self.error_list.append(error)
 
-      if expected_value is not None and self.current_token[1] != expected_value:
-          raise SyntaxError(f"Expected {expected_value}, got {self.current_token[0]} at {self.current_token[1]}")
-
-      self.current_token = self.get_next_token()
-  
-
-  
+        if expected_value is not None and self.current_token[1] != expected_value:
+            error = f"Expected |{expected_value}| got |{self.current_token[1]}|"
+            self.error_list.append(error)
+        
+        
+        #if len(self.error_list) > 0:
+        for erros in self.error_list:
+            print(f'\n {erros} \n')
+        self.current_token = self.get_next_token()
+        
+        if self.current_token is None and len(self.error_list) == 0:
+          print("Análise sintática concluída com sucesso.")
+        

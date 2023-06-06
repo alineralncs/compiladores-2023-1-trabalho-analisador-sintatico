@@ -57,7 +57,7 @@ class Keyword:
         #     # print('entra aqui')
         #     raise KeywordException(
         #         f"Palavra reservada inválida: {self.value}")
-        if not re.match(r'(?<!\w)(int|fun|char|long|short|float|double|void|if|else|for|while|do|break|continue|struct|switch|case|default|return|main|printf|scanf|elif|auto|enum|extern|goto|register|signed|sizeof|static|typedef|union|unsigned|volatile|while)(?!\w)', self.value):
+        if not re.match(r'(?<!\w)(int|fun|char|long|short|float|var|double|print|void|if|else|for|while|do|break|continue|struct|switch|case|default|return|main|printf|scanf|elif|auto|enum|extern|goto|register|signed|sizeof|static|typedef|union|unsigned|volatile|while)(?!\w)', self.value):
             raise KeywordException(
                 'Essa é uma palavra reservada inválida: {}'.format(self.value))
         return True
