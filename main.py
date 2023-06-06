@@ -1,20 +1,6 @@
 from lexico.scanner import Scanner
 from lexico.scanner import *
-from sintatico.parser import Parser
-
-# if __name__ == '__main__':
-#     file_code_font = 'exemplos.md'
-
-#     scanner = Scanner(file_code_font)
-#     tokens, errors = scanner.analyse()
-
-#     print("\nTokens Válidos \n")
-#     for token in tokens:
-#         print('<{}, {}>'.format(token[0], token[1]))
-
-#     # print("\nTokens Inválidos: \n")
-#     # for error in errors:
-#     #     print(errors[error]
+from sintatico.parser import *
 if __name__ == '__main__':
     file_code_font = 'exemplos.md'
 
@@ -26,15 +12,15 @@ if __name__ == '__main__':
         print("Lexical errors:")
         for error in errors:
             print(error)
-    else:
-        print("Tokens:")
-        for token in tokens:
-            print(token)
 
     # Syntactic analysis
     parser = Parser(tokens)
-    try:
-        parser.parseToken()
-        parser.logicAnd()
-    except SyntaxError as e:
-        print("Syntax error:", str(e))
+    print("oi")
+    #parser.parseTokens()
+    parser.program()
+    print("deu certo")
+    # try:
+    #     parser.parseTokens()
+    #     print("Análise sintática concluída sem erros.")
+    # except SyntaxError as e:
+    #     print("Syntax error:", str(e))
