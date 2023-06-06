@@ -1,19 +1,6 @@
+  
 
-print "Hello, world!";
-
-var a = 1;
-
-while (a < 10) {
-  print a;
-  a = a + 1;
-}
-
-fun printSum(a, b) {
-  print a + b;
-}
-
-printSum(10,  15);
-
+// Programa de exemplo 4
 var x = true;
 var y = 100;
 

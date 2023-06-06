@@ -2,8 +2,8 @@ from lexico.scanner import Scanner
 from lexico.scanner import *
 from sintatico.parser import *
 if __name__ == '__main__':
+    #file_code_font = 'ex_print.md'
     file_code_font = 'exemplos.md'
-
     # Lexical analysis
     scanner = Scanner(file_code_font)
     tokens, errors = scanner.analyse()
