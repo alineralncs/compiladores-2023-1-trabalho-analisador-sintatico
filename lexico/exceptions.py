@@ -25,7 +25,7 @@ class Identifier:
     def validate(self):
         reserved_words = ['int', 'char', 'long', 'short', 'float', 'double', 'void', 'if', 'else', 'for', 'while',
                           'do', 'break', 'continue', 'struct', 'switch', 'case', 'default', 'return', 'main',
-                          'printf', 'scanf', 'fun']
+                          'printf', 'scanf', 'fun', 'or', 'and', 'true', 'false']
         if self.value in reserved_words:
             raise IdentifierException(
                 f"Identificador Inválido: {self.value}")
@@ -49,11 +49,11 @@ class Keyword:
     def __init__(self, value):
         self.value = value
 
-    def validate(self):
+    def validate(self): 
         # keyword_list = ['int', 'char', 'long', 'short', 'float', 'double', 'void', 'if', 'else', 'for', 'while',
         #                 'do', 'break', 'continue', 'struct', 'switch', 'case', 'default', 'return', 'main',
         #                 'printf', 'scanf']
-        # if self.value not in keyword_list:
+        # if self.value not in keyword_list: 
         #     # print('entra aqui')
         #     raise KeywordException(
         #         f"Palavra reservada inválida: {self.value}")

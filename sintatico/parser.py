@@ -103,6 +103,7 @@ class Parser:
 
   def ifStmt(self): 
     self.consume('keyword', 'if')
+    print("aaa")
     if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
       self.consume('delimiter', '(')
       self.expression()
@@ -141,7 +142,7 @@ class Parser:
   def exprStmt(self): 
     print("passou")
     self.expression() #depois precisa do ;
-    
+    print("é pra ele voltar e colocar ;")
      # Verifica se há um token de delimitador ;
     self.consume('delimiter', ';')
 
@@ -229,6 +230,7 @@ class Parser:
     elif self.current_token[0] == 'delimiter' and self.current_token[1] == '.':
       self.consume('delimiter', '.')
       self.consume('identifier')
+    self.exprStmt()
           
   def primary(self): 
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
@@ -247,8 +249,8 @@ class Parser:
             print('here')
             self.consume('delimiter', '(')
             self.expression()
-            if self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
-               self.aux_call()
+            # if self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
+            #   self.aux_call()
             self.consume('delimiter', ')')
         if self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
             self.consume('keyword', 'super')
@@ -269,7 +271,7 @@ class Parser:
             raise SyntaxError("Unexpected end of input")
 
         if self.current_token[0] != token_type:
-            raise SyntaxError(f"Expected |{token_type}|  got |{self.current_token[0]}| ")
+            raise SyntaxError(f"Expected | {token_type} |  got | {self.current_token[0]} | ")
 
         if expected_value is not None and self.current_token[1] != expected_value:
             raise SyntaxError(f"Expected |{expected_value}|  got |{self.current_token[1]}| ")
