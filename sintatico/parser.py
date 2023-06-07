@@ -17,11 +17,9 @@ class Parser:
       print(f'\n current token {self.current_token} \n ')
       return self.current_token
     else:
-      #print('\n get next token 3 \n ')
       return None
     
   def program(self): 
-     # print('\n ======= program ======= \n')
       self.current_token = self.get_next_token()
       while self.current_token is not None: 
             self.declaration()
@@ -231,6 +229,14 @@ class Parser:
       self.consume('delimiter', '.')
       self.consume('identifier')
     self.exprStmt()
+    
+  # def arguments(self): 
+  #   self.expression()
+  #   print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
+  #   while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
+  #     print('nao entra')
+  #   self.consume('delimiter', ',')
+  #   self.expression()
           
   def primary(self): 
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
@@ -257,13 +263,7 @@ class Parser:
             self.consume('operator', '.')
             self.consume('identifier')
 
-  def arguments(self):
-        self.expression()
-        print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
-        while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
-            print('nao entra')
-            self.consume('delimiter', ',')
-            self.expression()
+  
       #consume                                      
 
   def consume(self, token_type, expected_value=None):
