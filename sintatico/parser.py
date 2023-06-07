@@ -48,6 +48,7 @@ class Parser:
     self.block()
     
   def parameters(self): 
+   # print('\n ====== parametrers ======= \n')
     if self.current_token[0] == 'identifier':
 
       self.consume('identifier')
@@ -160,8 +161,8 @@ class Parser:
         self.assignment()
       else: 
         self.logic_or()
-    # else: 
-    #   self.logic_or()
+    else: 
+      self.logic_or()
     
   def logic_or(self): 
     self.logic_and()
@@ -206,11 +207,13 @@ class Parser:
             self.unary()
         else:
             self.call()
-            
+
   def call(self): 
-    print("OI") #quando ele vem pra cá ele já é número
+    #printSum(10, 2)
+   # print("chegou printSum (")
+    #self.primary()
+    #print("oi sou virgula?")
     while ((self.current_token[0] == 'delimiter' and self.current_token[1] == '(') or (self.current_token[0] == 'delimiter' and self.current_token[1] == '.')):
-      print("não volta")
       if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
         self.consume('delimiter', '(')
         if self.current_token[0] != 'delimiter' and self.current_token[1] != ')':
@@ -220,46 +223,51 @@ class Parser:
         self.consume('delimiter', '.')
         self.consume('identifier')
     self.primary()
-    
-  def arguments(self): 
-    self.expression()
-    print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
-    while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
-      print('nao entra')
-    self.consume('delimiter', ',')
-    self.expression()
+
           
   def primary(self): 
-    if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
+        if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
                                                    self.current_token[1] == 'nil' or self.current_token[1] == 'this'):
-      self.consume('keyword')
-    if self.current_token[0] == 'integer' or self.current_token[0] == 'float':
-      self.consume(self.current_token[0])
-    if  self.current_token[0] == 'string':
-      self.consume('string')
-    if self.current_token[0] == 'identifier':
-      print("chegou aqui?")
-      self.consume('identifier')
-    if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
-      self.consume('delimiter', '(')
-      self.expression()
-      self.consume('delimiter', ')')
-    if self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
-      self.consume('keyword', 'super')
-      self.consume('operator', '.')
-      self.consume('identifier')                                 
+            self.consume('keyword')
+
+        elif self.current_token[0] == 'integer':
+            #print("passou como inteiro")
+            self.consume('integer')
+        elif  self.current_token[0] == 'string':
+            self.consume('string')
+        elif self.current_token[0] == 'identifier':
+            self.consume('identifier')
+        elif self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
+            self.consume('delimiter', '(')
+            self.expression()
+            self.consume('delimiter', ')')
+        elif self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
+            self.consume('keyword', 'super')
+            self.consume('operator', '.')
+            self.consume('identifier')
+        # else:
+        #   raise SyntaxError("oi")
+
+  def arguments(self):
+        self.expression()
+       # print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
+        while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
+            # print('nao entra')
+            self.consume('delimiter', ',')
+            self.expression()
+      #consume                                      
 
   def consume(self, token_type, expected_value=None):
-    if self.current_token is None:
-      raise SyntaxError("Unexpected end of input")
+        if self.current_token is None:
+            raise SyntaxError("Unexpected end of input")
 
-    if self.current_token[0] != token_type:
-      raise SyntaxError(f" Expected {token_type} got {self.current_token[0]} \n ============ \n \n")
+        if self.current_token[0] != token_type:
+            raise SyntaxError(f" Expected {token_type} got {self.current_token[0]} \n ============ \n \n")
 
-    if expected_value is not None and self.current_token[1] != expected_value:
-      raise SyntaxError(f" Expected {expected_value} got {self.current_token[1]} \n ============ \n\n")
+        if expected_value is not None and self.current_token[1] != expected_value:
+            raise SyntaxError(f" Expected {expected_value} got {self.current_token[1]} \n ============ \n\n")
 
-    self.current_token = self.get_next_token()
+        self.current_token = self.get_next_token()
 
 
         
