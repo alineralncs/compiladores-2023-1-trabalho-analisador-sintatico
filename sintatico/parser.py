@@ -5,19 +5,18 @@ class Parser:
     self.list_tokens = list_tokens #lista de tokens validados pelo analisador léxico
     self.token_index = 0 #primeiro índice da pilha
     self.current_token = None #token atual
-    self.error_list = []
-    self.error_occurred = False
+
   #ler token por token: 
   def  get_next_token(self): 
-    #print('\n get next token \n ')
     if self.token_index < len(self.list_tokens): 
-     # print('\n get next token 2 \n ')
       self.current_token = self.list_tokens[self.token_index]
       self.token_index += 1
-      print(f'\n current token {self.current_token} \n ')
+
+      #print(f"\nCurrent token: {self.current_token}")
+
+      print(f"\nToken Type: {self.current_token[0]}\nToken Value: {self.current_token[1]} \n \n ")
       return self.current_token
     else:
-      #print('\n get next token 3 \n ')
       return None
     
   def program(self): 
@@ -25,6 +24,8 @@ class Parser:
       self.current_token = self.get_next_token()
       while self.current_token is not None: 
             self.declaration()
+            #self.current_token = self.get_next_token()
+          
 
 
   def declaration(self):                                                  
@@ -56,7 +57,7 @@ class Parser:
       self.consume('identifier')
       
   def varDecl(self): 
-    print('======= var decla ======= \n')
+   # print('======= var decla ======= \n')
     self.consume('keyword', 'var')
     self.consume('identifier')
    
@@ -67,7 +68,6 @@ class Parser:
   
   def statement(self): 
     if self.current_token[0] == 'identifier':
-       print('ta passando como identifier?')
        self.exprStmt()
     elif self.current_token[0] == 'keyword' and self.current_token[1] == 'for':
       self.forStmt()
@@ -140,22 +140,21 @@ class Parser:
     self.consume('delimiter', '}')
 
   def exprStmt(self): 
-    print("passou")
+    #print("passou")
     self.expression() #depois precisa do ;
-    print("é pra ele voltar e colocar ;")
+   # print("é pra ele voltar e colocar ;")
      # Verifica se há um token de delimitador ;
     self.consume('delimiter', ';')
 
   def expression(self): 
     # print('\n ====== expression =======')
-    print("o")
+    #print("o")
     self.assignment()
     
   def assignment(self): #var a  = 1;
     #print('\n ======= assignment ======= \n')
-    
     if self.current_token[0] == 'identifier':
-      print("oi")
+      #print("oi")
       self.consume('identifier')
       if self.current_token[0] == 'operator' and self.current_token[1] == '=':
         self.consume('operator', '=')
@@ -209,10 +208,11 @@ class Parser:
         else:
             self.call()
 
-  def call(self): #printSum(10, 2)
-    print("chegou printSum (")
+  def call(self): 
+    #printSum(10, 2)
+   # print("chegou printSum (")
     self.primary()
-    print("oi sou virgula?")
+    #print("oi sou virgula?")
     while ((self.current_token[0] == 'delimiter' and self.current_token[1] == '(') or (self.current_token[0] == 'delimiter' and self.current_token[1] == '.')):
       if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
         self.consume('delimiter', '(')
@@ -238,15 +238,13 @@ class Parser:
             self.consume('keyword')
         #não é number
         if self.current_token[0] == 'integer':
-            print("passou como inteiro")
+            #print("passou como inteiro")
             self.consume('integer')
         if  self.current_token[0] == 'string':
             self.consume('string')
         if self.current_token[0] == 'identifier':
             self.consume('identifier')
-            print(f'tokentype {self.current_token[0]}')
         if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
-            print('here')
             self.consume('delimiter', '(')
             self.expression()
             # if self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
@@ -259,9 +257,9 @@ class Parser:
 
   def arguments(self):
         self.expression()
-        print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
+       # print(f'\n arguments \n token type: { self.current_token[0]}\n token value: {self.current_token[1]} \n')
         while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
-            print('nao entra')
+            # print('nao entra')
             self.consume('delimiter', ',')
             self.expression()
       #consume                                      
@@ -271,31 +269,12 @@ class Parser:
             raise SyntaxError("Unexpected end of input")
 
         if self.current_token[0] != token_type:
-            raise SyntaxError(f"Expected | {token_type} |  got | {self.current_token[0]} | ")
+            raise SyntaxError(f" Expected {token_type} got {self.current_token[0]} \n ============ \n \n")
 
         if expected_value is not None and self.current_token[1] != expected_value:
-            raise SyntaxError(f"Expected |{expected_value}|  got |{self.current_token[1]}| ")
+            raise SyntaxError(f" Expected {expected_value} got {self.current_token[1]} \n ============ \n\n")
 
         self.current_token = self.get_next_token()
-  def conssusme(self, token_type, expected_value=None):
-        if self.current_token is None:
-            error = "Unexpected end of input"
-            self.error_list.append(error)
 
-        if self.current_token[0] != token_type:
-            error = f"Expected |{expected_value}| got |{self.current_token[1]}|"
-            self.error_list.append(error)
 
-        if expected_value is not None and self.current_token[1] != expected_value:
-            error = f"Expected |{expected_value}| got |{self.current_token[1]}|"
-            self.error_list.append(error)
-        
-        
-        #if len(self.error_list) > 0:
-        for erros in self.error_list:
-            print(f'\n {erros} \n')
-        self.current_token = self.get_next_token()
-        
-        if self.current_token is None and len(self.error_list) == 0:
-          print("Análise sintática concluída com sucesso.")
         
