@@ -211,7 +211,7 @@ class Parser:
   def call(self): 
     #printSum(10, 2)
    # print("chegou printSum (")
-    self.primary()
+    #self.primary()
     #print("oi sou virgula?")
     while ((self.current_token[0] == 'delimiter' and self.current_token[1] == '(') or (self.current_token[0] == 'delimiter' and self.current_token[1] == '.')):
       if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
@@ -222,7 +222,7 @@ class Parser:
       elif self.current_token[0] == 'delimiter' and self.current_token[1] == '.':
         self.consume('delimiter', '.')
         self.consume('identifier')
-        
+    self.primary()
   def aux_call(self): #,
     if self.current_token[0] != 'delimiter' or self.current_token[1] != ')':
       self.arguments()
@@ -236,24 +236,24 @@ class Parser:
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
                                                    self.current_token[1] == 'nil' or self.current_token[1] == 'this'):
             self.consume('keyword')
-        #não é number
-        if self.current_token[0] == 'integer':
+
+        elif self.current_token[0] == 'integer':
             #print("passou como inteiro")
             self.consume('integer')
-        if  self.current_token[0] == 'string':
+        elif  self.current_token[0] == 'string':
             self.consume('string')
-        if self.current_token[0] == 'identifier':
+        elif self.current_token[0] == 'identifier':
             self.consume('identifier')
-        if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
+        elif self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
             self.consume('delimiter', '(')
             self.expression()
-            # if self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
-            #   self.aux_call()
             self.consume('delimiter', ')')
-        if self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
+        elif self.current_token[0] == 'keyword' and self.current_token[1] == 'super':
             self.consume('keyword', 'super')
             self.consume('operator', '.')
             self.consume('identifier')
+        # else:
+        #   raise SyntaxError("oi")
 
   def arguments(self):
         self.expression()
