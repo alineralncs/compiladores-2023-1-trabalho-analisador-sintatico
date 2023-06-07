@@ -223,14 +223,7 @@ class Parser:
         self.consume('delimiter', '.')
         self.consume('identifier')
     self.primary()
-  def aux_call(self): #,
-    if self.current_token[0] != 'delimiter' or self.current_token[1] != ')':
-      self.arguments()
-      self.consume('delimiter', ')')
-    elif self.current_token[0] == 'delimiter' and self.current_token[1] == '.':
-      self.consume('delimiter', '.')
-      self.consume('identifier')
-    self.exprStmt()
+
           
   def primary(self): 
         if self.current_token[0] == 'keyword' and (self.current_token[1] == 'true' or self.current_token[1] == 'false' or
