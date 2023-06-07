@@ -7,7 +7,7 @@ if __name__ == '__main__':
     #file_code_font = 'ex_3.md'
     #file_code_font = 'ex_4.md'
     #file_code_font = 'ex_5.md'
-    file_code_font = 'ex_6.md'
+    file_code_font = 'ex_3.md'
 
     # Lexical analysis
     scanner = Scanner(file_code_font)

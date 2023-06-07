@@ -137,15 +137,15 @@ class Parser:
     self.assignment()
     
   def assignment(self): 
-    if self.current_token[0] == 'identifier':
-      self.consume('identifier')
+    # if self.current_token[0] == 'identifier':
+    #   self.consume('identifier') #não deveria consumir de cara
       if self.current_token[0] == 'operator' and self.current_token[1] == '=':
         self.consume('operator', '=')
         self.assignment()
       else: 
         self.logic_or()
-    else: 
-      self.logic_or()
+    # else: 
+    #   self.logic_or()
     
   def logic_or(self): 
     self.logic_and()
@@ -190,10 +190,11 @@ class Parser:
             self.unary()
         else:
             self.call()
-
+            
   def call(self): 
-    self.primary()
+    print("OI") #quando ele vem pra cá ele já é número
     while ((self.current_token[0] == 'delimiter' and self.current_token[1] == '(') or (self.current_token[0] == 'delimiter' and self.current_token[1] == '.')):
+      print("não volta")
       if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
         self.consume('delimiter', '(')
         if self.current_token[0] != 'delimiter' and self.current_token[1] != ')':
@@ -202,15 +203,7 @@ class Parser:
       elif self.current_token[0] == 'delimiter' and self.current_token[1] == '.':
         self.consume('delimiter', '.')
         self.consume('identifier')
-        
-  def aux_call(self): 
-    if self.current_token[0] != 'delimiter' or self.current_token[1] != ')':
-      self.arguments()
-      self.consume('delimiter', ')')
-    elif self.current_token[0] == 'delimiter' and self.current_token[1] == '.':
-      self.consume('delimiter', '.')
-      self.consume('identifier')
-    self.exprStmt()
+    self.primary()
     
   def arguments(self): 
     self.expression()
@@ -229,6 +222,7 @@ class Parser:
     if  self.current_token[0] == 'string':
       self.consume('string')
     if self.current_token[0] == 'identifier':
+      print("chegou aqui?")
       self.consume('identifier')
     if self.current_token[0] == 'delimiter' and self.current_token[1] == '(':
       self.consume('delimiter', '(')
