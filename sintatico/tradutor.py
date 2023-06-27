@@ -31,36 +31,61 @@ class Tradutor:
         if self.current_token[0] == 'keyword' and self.current_token[1] == 'fun':
             self.funDecl()
         elif self.current_token[0] == 'keyword' and self.current_token[1] == 'var':
+            self.py_code += ""
             self.varDecl()
         else:
             self.statement()
 
     def funDecl(self):
         self.consume('keyword', 'fun')
+        self.py_code += "def "
         self.function()
 
+
     def function(self):
-        self.consume('identifier')
+        if self.current_token[0] == 'identifier':
+            
+            identifier_ex = self.current_token[1] 
+            #print('eh',colocar)
+            self.consume('identifier')
+            self.py_code += identifier_ex
+
+   
         self.consume('delimiter', '(')
+        self.py_code += "("
+        
         self.parameters()
+       # print('identifie', self.current_token[1])
         self.consume('delimiter', ')')
+        self.py_code += ")"
         self.block()
 
     def parameters(self):
+        parametro = self.current_token[1]
+        self.py_code += parametro
         if self.current_token[0] == 'identifier':
             self.consume('identifier')
+            
+            self.py_code += " , "
         while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
-            self.consume('delimiter', ',')
+            self.consume('delimiter')
+            parametro = self.current_token[1]
+            self.py_code += parametro
             self.consume('identifier')
+  
 
     def varDecl(self):
         self.consume('keyword', 'var')
+        nome_variaveis = self.current_token[1]
+        self.py_code += nome_variaveis
         self.consume('identifier')
 
         if self.current_token[0] == 'operator' and self.current_token[1] == '=':
             self.consume('operator', '=')
+            self.py_code += " = "
             self.expression()
         self.consume('delimiter', ';')
+        self.py_code +="\n"
 
     def statement(self):
         
@@ -102,14 +127,20 @@ class Tradutor:
         self.consume('delimiter', '(')
         self.expression()
         self.consume('delimiter', ')')
-        self.py_code += ":\n\t"
-       
+        #self.py_code += ":\n\t"
+        
         self.statement()
-
-        if self.current_token[0] == 'keyword' and self.current_token[1] == 'else':
+        if self.current_token[0] == 'keyword' and self.current_token[1] == 'else' :
             self.consume('keyword', 'else')
-            self.py_code += "\nelse:\n\t"
-            self.statement()
+            if self.current_token[0] == 'keyword' and self.current_token[1] == 'if':
+                #print('aqui 2')
+                self.py_code += "\nelif"
+
+                self.statement()
+            else:
+                #print('agora n ne ')
+                self.py_code += "\nelse"
+                self.statement()
 
     def printStmt(self):
         self.consume('keyword', 'print')
@@ -120,7 +151,7 @@ class Tradutor:
 
     def returnStmt(self):
         self.consume('keyword', 'return')
-        self.py_code += "return"
+        self.py_code += "return "
         if self.current_token[0] != 'delimiter' or self.current_token[1] != ';':
             self.expression()
         self.consume('delimiter', ';')
@@ -135,9 +166,13 @@ class Tradutor:
 
     def block(self):
         self.consume('delimiter', '{')
+        #print('aq')
+        
+        self.py_code += ":\n\t"
         while self.current_token[0] != 'delimiter' or self.current_token[1] != '}':
             self.declaration()
         self.consume('delimiter', '}')
+        self.py_code += "\n"
 
     def exprStmt(self):
         self.expression()
@@ -184,7 +219,7 @@ class Tradutor:
         self.term()
         while self.current_token[0] == 'operator' and (self.current_token[1] == '>' or self.current_token[1] == '>=' or
                                                        self.current_token[1] == '<' or self.current_token[1] == '<='):
-            self.py_code += self.current_token[1]
+            self.py_code += " " + self.current_token[1] +  " "
             self.consume('operator')
             self.term()
 
@@ -255,6 +290,7 @@ class Tradutor:
         self.expression()
         while self.current_token[0] == 'delimiter' and self.current_token[1] == ',':
             self.consume('delimiter', ',')
+            self.py_code += " , "
             self.expression()
 
     def consume(self, token_type, expected_value=None):

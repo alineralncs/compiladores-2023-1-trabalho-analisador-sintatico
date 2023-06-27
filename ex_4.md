@@ -1,12 +1,13 @@
-var x = true;
-var y = 100;
+fun getSum(a, b) {
+  return a + b;
+}
 
-if(10 > y or x) {
-  print "1";
+var sum = getSum(4, 5);
+
+if(sum > 10) {
+print "yes";
+} else if(sum > 20) {
+print "maybe";
 } else {
-  if(10 < y and !x) {
-    print "2";
-  } else {
-    print "3";
-  }
+print "no";
 }
