@@ -1,6 +1,9 @@
-var a = 1;
 
-while (a < 10) {
-  print a;
-  a = a + 1;
+
+if(sum > 10) {
+print "yes";
+} else if(sum > 20) {
+print "maybe";
+} else {
+print "no";
 }

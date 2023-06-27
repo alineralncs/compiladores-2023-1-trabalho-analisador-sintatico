@@ -1,8 +1,9 @@
 from lexico.scanner import Scanner
 from lexico.scanner import *
 from sintatico.parser import *
+from sintatico.tradutor import Tradutor
 if __name__ == '__main__':
-    file_code_fonts = ['ex_1.md', 'ex_2.md', 'ex_3.md', 'ex_4.md', 'ex_5.md', 'ex_6.md']
+    file_code_fonts = ['exemplo.md']
 
     for file_code_font in file_code_fonts: 
         # Lexical analysis
@@ -20,5 +21,11 @@ if __name__ == '__main__':
         try:
             parser.program()
             print(f"Syntactic analysis for {file_code_font} completed successfully!")
+                  # Translation
+            translator = Tradutor(tokens)
+            python_code = translator.translate()
+
+            print(f"Translation for {file_code_font}")
+            print(python_code)
         except SyntaxError as e:
             print(f"\n=======\nSyntax error in {file_code_font}:\n{str(e)}")

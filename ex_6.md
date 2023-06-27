@@ -2,4 +2,10 @@ if(sum > 10) {
   print "yes";
 } else {
   print "no";
-}
+}fun a1(a) { return a*2; }
+fun a2(a) { return a/2; }
+
+print a1(4) * a2(10); print a2(5) / a1(50);
+var c = nil;
+if(a1(4) > 5) { print "ok"; }
+c = 40; print c;
